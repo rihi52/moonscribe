@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import '../theme/apptheme.dart';
-class CreatureCard extends StatelessWidget {
+
+class PlayerCard extends StatelessWidget {
   final bool selected;
   final VoidCallback? onTap;
 
   final String name;
-  final String type;
-  final String size;
-  final String cr;
-  final String source;
+  final String pClass;
 
-  const CreatureCard({
+  const PlayerCard({
     super.key,
     required this.name,
-    required this.type,
-    required this.size,
-    required this.cr,
-    required this.source,
+    required this.pClass,
     this.selected = false,
     this.onTap,
   });
@@ -42,17 +37,10 @@ class CreatureCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(type, style: Theme.of(context).textTheme.bodySmall),
-                Text(size, style: Theme.of(context).textTheme.bodySmall),
+                Text(pClass, style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('CR $cr', style: Theme.of(context).textTheme.bodySmall),
-                Text(source, style: Theme.of(context).textTheme.bodySmall),
-              ],
-            ),
+            
           ],
         ),
       ),
