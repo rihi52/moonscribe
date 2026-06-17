@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moonscribe/theme/apptheme.dart';
+import 'package:moonscribe/models/combat.dart';
 
-class PlayerCard extends StatelessWidget {
+class CombatantCard extends StatelessWidget {
   final bool selected;
   final VoidCallback? onTap;
-  final String name;
-  final String pClass;
-  final int level;
 
-  const PlayerCard({
+  final Combatant combatant;
+
+  const CombatantCard({
     super.key,
-    required this.name,
-    required this.pClass,
-    required this.level,
+    required this.combatant,
     this.selected = false,
     this.onTap,
   });
@@ -30,19 +28,13 @@ class PlayerCard extends StatelessWidget {
         subtitle: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(name, style: Theme.of(context).textTheme.bodySmall),
+                Text('Initiative: ${combatant.initiative}', style: Theme.of(context).textTheme.bodySmall),
+                Text(combatant.name, style: Theme.of(context).textTheme.bodySmall),                
+                Text('HitPoints: ${combatant.quantity}', style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(pClass, style: Theme.of(context).textTheme.bodySmall),
-                Text('Level $level', style: Theme.of(context).textTheme.bodySmall),
-              ],
-            ),
-            
           ],
         ),
       ),
