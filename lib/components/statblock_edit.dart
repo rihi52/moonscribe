@@ -663,6 +663,11 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    ElevatedButton(onPressed: null, child: Text('+')),
+                    Text(
+                      'Traits',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                     ..._draft.traits!.asMap().entries.map((entry) {
                       final index = entry.key;
                       final trait = entry.value;
