@@ -35,7 +35,7 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.appBlack,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          minimumSize: const Size(250, 55),
+          // minimumSize: Size(250, 55),
           textStyle: GoogleFonts.metamorphous(
             fontSize: 20,
             fontWeight: FontWeight.bold,

@@ -54,6 +54,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
     super.initState();
 
     final traits = widget.creature?.traits ?? const <CreatureTrait>[];
+    final actions = widget.creature?.actions ?? const <CreatureAction>[];
 
     _draft = CreatureDraft(
       traits: traits
@@ -64,11 +65,24 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
             ),
           )
           .toList(),
+      actions: actions
+          .map(
+            (action) => CreatureActionDraft(
+              name: action.name,
+              description: action.description,
+              type: action.type,
+            ),
+          )
+          .toList(),
     );
   }
 
   void _addTrait() {
     setState(() => _draft.traits!.add(CreatureTraitDraft()));
+  }
+
+  void _addAction() {
+    setState(() => _draft.actions!.add(CreatureActionDraft()));
   }
 
   void _submit() {
@@ -667,15 +681,21 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          height: 30,
-                          width: 50,
+                        Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: AppSpacing.spacingSmall,
+                            vertical: AppSpacing.spacingSmall,
+                          ),
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(30, 35),
+                            ),
                             onPressed: _addTrait,
                             child: Text(
                               '+',
-                              textAlign: TextAlign.center,
+                              //textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ),
@@ -704,6 +724,62 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             startingValue: trait.description,
                             onSaved: (value) =>
                                 _draft.traits![index].description = value,
+                            maxLines: 4,
+                          ),
+                          const SizedBox(height: AppSpacing.spacingMedium),
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              StatblockSection(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: AppSpacing.spacingSmall,
+                            vertical: AppSpacing.spacingSmall,
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(30, 35),
+                            ),
+                            onPressed: _addAction,
+                            child: Text(
+                              '+',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Actions',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    ..._draft.actions!.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final action = entry.value;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          StatblockEditSmallText(
+                            labelText: 'Name',
+                            startingValue: action.name,
+                            onSaved: (value) =>
+                                _draft.actions![index].name = value,
+                          ),
+                          StatblockEditSmallText(
+                            labelText: 'Description',
+                            startingValue: action.description,
+                            onSaved: (value) =>
+                                _draft.actions![index].description = value,
                             maxLines: 4,
                           ),
                           const SizedBox(height: AppSpacing.spacingMedium),
