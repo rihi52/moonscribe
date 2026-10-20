@@ -56,17 +56,19 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
     final traits = widget.creature?.traits ?? const <CreatureTrait>[];
 
     _draft = CreatureDraft(
-      traits: traits.isEmpty
-          ? [CreatureTraitDraft()]
-          : traits
-                .map(
-                  (trait) => CreatureTraitDraft(
-                    name: trait.name,
-                    description: trait.description,
-                  ),
-                )
-                .toList(),
+      traits: traits
+          .map(
+            (trait) => CreatureTraitDraft(
+              name: trait.name,
+              description: trait.description,
+            ),
+          )
+          .toList(),
     );
+  }
+
+  void _addTrait() {
+    setState(() => _draft.traits!.add(CreatureTraitDraft()));
   }
 
   void _submit() {
@@ -87,6 +89,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
     return SingleChildScrollView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Form(
+        key: _formKey,
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.cardSelected,
@@ -663,10 +666,25 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ElevatedButton(onPressed: null, child: Text('+')),
-                    Text(
-                      'Traits',
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 30,
+                          width: 50,
+                          child: ElevatedButton(
+                            onPressed: _addTrait,
+                            child: Text(
+                              '+',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Traits',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
                     ),
                     ..._draft.traits!.asMap().entries.map((entry) {
                       final index = entry.key;
