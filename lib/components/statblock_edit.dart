@@ -677,6 +677,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                   ],
                 ),
               ),
+              StatblockSection(child: SpellCastingTile()),
               StatblockSection(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -703,63 +704,6 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                         ),
                         Text(
                           'Traits',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                    ..._draft.traits!.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final trait = entry.value;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          StatblockEditSmallText(
-                            labelText: 'Name',
-                            startingValue: trait.name,
-                            onSaved: (value) =>
-                                _draft.traits![index].name = value,
-                          ),
-                          StatblockEditSmallText(
-                            labelText: 'Description',
-                            startingValue: trait.description,
-                            onSaved: (value) =>
-                                _draft.traits![index].description = value,
-                            maxLines: 4,
-                          ),
-                          const SizedBox(height: AppSpacing.spacingMedium),
-                        ],
-                      );
-                    }),
-                  ],
-                ),
-              ),
-              StatblockSection(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsGeometry.symmetric(
-                            horizontal: AppSpacing.spacingSmall,
-                            vertical: AppSpacing.spacingSmall,
-                          ),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(30, 35),
-                            ),
-                            onPressed: _addTrait,
-                            child: Text(
-                              '+',
-                              //textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'Spellcasting',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
@@ -1299,6 +1243,26 @@ class StatblockCheckboxRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class SpellCastingTile extends StatefulWidget {
+  const SpellCastingTile({super.key});
+
+  @override
+  State<SpellCastingTile> createState() => _SpellCastingTileState();
+}
+
+class _SpellCastingTileState extends State<SpellCastingTile> {
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(
+        'Spellcasting',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      children: const [ListTile(title: Text('Add spellcasting details here'))],
     );
   }
 }
