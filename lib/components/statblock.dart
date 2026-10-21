@@ -743,14 +743,17 @@ class CreatureSkills {
 }
 
 enum ActionType {
-  action,
-  blurb,
-  bonusAction,
-  reaction,
-  legendary,
-  lair,
-  special,
-  villainAction,
+  action('Action'),
+  blurb('Blurb'),
+  bonusAction('Bonus Action'),
+  reaction('Reaction'),
+  legendary('Legendary'),
+  lair('Lair'),
+  special('Special'),
+  villainAction('Villain Action');
+
+  const ActionType(this.label);
+  final String label;
 }
 
 class CreatureAction {

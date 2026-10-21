@@ -17,6 +17,7 @@ class StatblockEditorForm extends StatefulWidget {
 
 class _StatblockEditorForm extends State<StatblockEditorForm> {
   final _formKey = GlobalKey<FormState>();
+
   late final CreatureDraft _draft;
   bool isStrChecked = false;
   bool isDexChecked = false;
@@ -738,6 +739,63 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: AppSpacing.spacingSmall,
+                            vertical: AppSpacing.spacingSmall,
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(30, 35),
+                            ),
+                            onPressed: _addTrait,
+                            child: Text(
+                              '+',
+                              //textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Spellcasting',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    ..._draft.traits!.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final trait = entry.value;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          StatblockEditSmallText(
+                            labelText: 'Name',
+                            startingValue: trait.name,
+                            onSaved: (value) =>
+                                _draft.traits![index].name = value,
+                          ),
+                          StatblockEditSmallText(
+                            labelText: 'Description',
+                            startingValue: trait.description,
+                            onSaved: (value) =>
+                                _draft.traits![index].description = value,
+                            maxLines: 4,
+                          ),
+                          const SizedBox(height: AppSpacing.spacingMedium),
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              StatblockSection(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
                       children: [
                         Padding(
                           padding: EdgeInsetsGeometry.symmetric(
@@ -774,6 +832,23 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             startingValue: action.name,
                             onSaved: (value) =>
                                 _draft.actions![index].name = value,
+                          ),
+                          DropdownMenu<ActionType>(
+                            initialSelection: ActionType.action,
+                            onSelected: (ActionType? value) {
+                              setState(
+                                () => _draft.actions![index].type = value,
+                              );
+                            },
+                            textStyle: Theme.of(context).textTheme.titleSmall,
+                            dropdownMenuEntries: ActionType.values
+                                .map(
+                                  (choice) => DropdownMenuEntry<ActionType>(
+                                    value: choice,
+                                    label: choice.label,
+                                  ),
+                                )
+                                .toList(),
                           ),
                           StatblockEditSmallText(
                             labelText: 'Description',
