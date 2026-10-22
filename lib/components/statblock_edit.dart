@@ -1,4 +1,5 @@
-import 'dart:ui';
+// import 'dart:ffi';
+// import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -677,7 +678,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                   ],
                 ),
               ),
-              StatblockSection(child: SpellCastingTile()),
+              StatblockSection(child: SpellCastingTile(creatureDraft: _draft, creature: c, onSaved: (value) => _draft.spellCasting!.name = value,)),
               StatblockSection(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1248,7 +1249,10 @@ class StatblockCheckboxRow extends StatelessWidget {
 }
 
 class SpellCastingTile extends StatefulWidget {
-  const SpellCastingTile({super.key});
+  const SpellCastingTile({super.key, required this.onSaved, required this.creatureDraft, this.creature});
+  final ValueChanged<String> onSaved;
+  final Creature? creature;
+  final CreatureDraft creatureDraft;
 
   @override
   State<SpellCastingTile> createState() => _SpellCastingTileState();
@@ -1258,11 +1262,88 @@ class _SpellCastingTileState extends State<SpellCastingTile> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      maintainState: true,
       title: Text(
         'Spellcasting',
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      children: const [ListTile(title: Text('Add spellcasting details here'))],
+      children: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsetsGeometry.directional(
+                start: AppSpacing.spacingSmall,
+              ),
+              child: SizedBox(
+                width: 95,
+                child: StatblockSmallText(
+                  data: 'Cantrips',
+                  alignment: TextAlign.start,
+                ),
+              ),
+            ),
+            Expanded(
+              child: StatblockEditSmallText(
+                labelText: 'Spell Names',
+                onSaved: (value) =>
+                    widget.creatureDraft.spellCasting!.name = value,
+                startingValue: widget.creature?.spellCasting?.name,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsetsGeometry.directional(
+                start: AppSpacing.spacingSmall,
+              ),
+              child: SizedBox(
+                width: 95,
+                child: StatblockSmallText(
+                  data: '1st Level',
+                  alignment: TextAlign.start,
+                ),
+              ),
+            ),
+            Expanded(
+              child: StatblockEditSmallText(
+                labelText: 'Spell Names',
+                onSaved: (value) =>
+                    widget.creatureDraft.spellCasting!.name = value,
+                startingValue: widget.creature?.spellCasting?.name,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsetsGeometry.directional(
+                start: AppSpacing.spacingSmall,
+              ),
+              child: SizedBox(
+                width: 95,
+                child: StatblockSmallText(
+                  data: '2nd Level',
+                  alignment: TextAlign.start,
+                ),
+              ),
+            ),
+            Expanded(
+              child: StatblockEditSmallText(
+                labelText: 'Spell Names',
+                onSaved: (value) =>
+                    widget.creatureDraft.spellCasting!.name = value,
+                startingValue: widget.creature?.spellCasting?.name,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
