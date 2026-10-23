@@ -527,7 +527,7 @@ class Creature {
   final List<CreatureTrait> traits;
   final CreatureRegionalEffect? regionalEffect;
 
-  final int id;
+  final int? id;
 
   const Creature({
     required this.name,
@@ -548,7 +548,7 @@ class Creature {
     required this.actions,
     required this.traits,
     required this.regionalEffect,
-    required this.id,
+    this.id,
   });
 }
 

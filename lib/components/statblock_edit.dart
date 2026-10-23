@@ -1,6 +1,3 @@
-// import 'dart:ffi';
-// import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moonscribe/theme/apptheme.dart';
@@ -118,8 +115,13 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
 
     // final creature = Creature();
     _draft.savingThrows!.isDexProf = isDexChecked;
+    _draft.savingThrows!.isStrProf = isStrChecked;
+    _draft.savingThrows!.isConProf = isConChecked;
+    _draft.savingThrows!.isIntProf = isIntChecked;
+    _draft.savingThrows!.isWisProf = isWisChecked;
+    _draft.savingThrows!.isChaProf = isChaChecked;
 
-    // widget.onSubmit(creature);
+    widget.onSubmit?.call(_draft.toCreature());
   }
 
   @override
@@ -140,13 +142,17 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               StatblockSection(
-                child: TextField(
+                child: ElevatedButton(onPressed: _submit, child: Text('Save')),
+              ),
+              StatblockSection(
+                child: TextFormField(
                   style: Theme.of(context).textTheme.titleLarge,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Name",
                     labelStyle: Theme.of(context).textTheme.titleMedium,
                   ),
+                  onSaved: (value) => _draft.name = value!,
                 ),
               ),
               StatblockSection(
@@ -156,21 +162,21 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                       child: StatblockEditSmallText(
                         labelText: "Size",
                         startingValue: c?.size,
-                        onSaved: (v) => _draft.size = v,
+                        onSaved: (value) => _draft.size = value,
                       ),
                     ),
                     Expanded(
                       child: StatblockEditSmallText(
                         labelText: "Type",
                         startingValue: c?.type,
-                        onSaved: (v) => _draft.type = v,
+                        onSaved: (value) => _draft.type = value,
                       ),
                     ),
                     Expanded(
                       child: StatblockEditSmallText(
                         labelText: "Alignment",
                         startingValue: c?.alignment,
-                        onSaved: (v) => _draft.alignment = v,
+                        onSaved: (value) => _draft.alignment = value,
                       ),
                     ),
                   ],
@@ -189,15 +195,15 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.armorClass!.ac = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.armorClass!.ac = int.tryParse(value) ?? 0,
                           ),
                         ),
                         Expanded(
                           child: StatblockEditSmallText(
                             labelText: "Armor Type",
                             startingValue: c?.armorClass.type,
-                            onSaved: (v) => _draft.armorClass!.type = v,
+                            onSaved: (value) => _draft.armorClass!.type = value,
                           ),
                         ),
                       ],
@@ -212,15 +218,15 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.hitPoints = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.hitPoints = int.tryParse(value) ?? 0,
                           ),
                         ),
                         Expanded(
                           child: StatblockEditSmallText(
                             labelText: "Formula (eg: 8d6 + 5)",
                             startingValue: c?.hitPointFormula,
-                            onSaved: (v) => _draft.hitPointFormula = v,
+                            onSaved: (value) => _draft.hitPointFormula = value,
                           ),
                         ),
                       ],
@@ -235,8 +241,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.speed!.walk = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.speed!.walk = int.tryParse(value) ?? 0,
                           ),
                         ),
                         Expanded(
@@ -247,8 +253,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.speed!.fly = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.speed!.fly = int.tryParse(value) ?? 0,
                           ),
                         ),
                         Expanded(
@@ -259,8 +265,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.speed!.climb = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.speed!.climb = int.tryParse(value) ?? 0,
                           ),
                         ),
                         Expanded(
@@ -271,8 +277,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.speed!.swim = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.speed!.swim = int.tryParse(value) ?? 0,
                           ),
                         ),
                         Expanded(
@@ -283,8 +289,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            onSaved: (v) =>
-                                _draft.speed!.burrow = int.tryParse(v) ?? 0,
+                            onSaved: (value) =>
+                                _draft.speed!.burrow = int.tryParse(value) ?? 0,
                           ),
                         ),
                       ],
@@ -319,8 +325,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
-                                onSaved: (v) => _draft.abilityScores!.strength =
-                                    int.tryParse(v) ?? 0,
+                                onSaved: (value) => _draft.abilityScores!.strength =
+                                    int.tryParse(value) ?? 0,
                               ),
                               SizedBox(
                                 width: smallBoxWidth,
@@ -346,9 +352,9 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
-                                onSaved: (v) =>
+                                onSaved: (value) =>
                                     _draft.abilityScores!.dexterity =
-                                        int.tryParse(v) ?? 0,
+                                        int.tryParse(value) ?? 0,
                               ),
                               SizedBox(
                                 width: smallBoxWidth,
@@ -374,9 +380,9 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
-                                onSaved: (v) =>
+                                onSaved: (value) =>
                                     _draft.abilityScores!.constitution =
-                                        int.tryParse(v) ?? 0,
+                                        int.tryParse(value) ?? 0,
                               ),
                               SizedBox(
                                 width: smallBoxWidth,
@@ -402,9 +408,9 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
-                                onSaved: (v) =>
+                                onSaved: (value) =>
                                     _draft.abilityScores!.intelligence =
-                                        int.tryParse(v) ?? 0,
+                                        int.tryParse(value) ?? 0,
                               ),
                               SizedBox(
                                 width: smallBoxWidth,
@@ -430,8 +436,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
-                                onSaved: (v) => _draft.abilityScores!.wisdom =
-                                    int.tryParse(v) ?? 0,
+                                onSaved: (value) => _draft.abilityScores!.wisdom =
+                                    int.tryParse(value) ?? 0,
                               ),
                               SizedBox(
                                 width: smallBoxWidth,
@@ -457,8 +463,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                 ],
-                                onSaved: (v) => _draft.abilityScores!.charisma =
-                                    int.tryParse(v) ?? 0,
+                                onSaved: (value) => _draft.abilityScores!.charisma =
+                                    int.tryParse(value) ?? 0,
                               ),
                               SizedBox(
                                 width: smallBoxWidth,
@@ -883,6 +889,118 @@ class CreatureDraft {
   CreatureRegionalEffectDraft? regionalEffect;
 
   int? id;
+
+  Creature toCreature() {
+    return Creature(
+      id: id,
+      name: name,
+      size: size,
+      type: type,
+      alignment: alignment,
+      armorClass: CreatureArmorClass(
+        ac: armorClass!.ac,
+        type: armorClass!.type,
+      ),
+      hitPoints: hitPoints,
+      hitPointFormula: hitPointFormula,
+      challengeRating: CreatureCR(
+        cr: challengeRating!.cr,
+        lair: challengeRating?.lair,
+        coven: challengeRating?.coven,
+      ),
+      speed: CreatureSpeed(
+        walk: speed?.walk,
+        fly: speed?.fly,
+        climb: speed?.climb,
+        swim: speed?.swim,
+        burrow: speed?.burrow,
+      ),
+      abilityScores: CreatureAbilityScores(
+        strength: abilityScores!.strength,
+        strengthModifier: abilityScores!.strengthModifier,
+        dexterity: abilityScores!.dexterity,
+        dexterityModifier: abilityScores!.dexterityModifier,
+        constitution: abilityScores!.constitution,
+        constitutionModifier: abilityScores!.constitutionModifier,
+        intelligence: abilityScores!.intelligence,
+        intelligenceModifier: abilityScores!.intelligenceModifier,
+        wisdom: abilityScores!.wisdom,
+        wisdomModifier: abilityScores!.wisdomModifier,
+        charisma: abilityScores!.charisma,
+        charismaModifier: abilityScores!.charismaModifier,
+      ),
+      skills: CreatureSkills(
+        athletics: skills?.athletics,
+        acrobatics: skills?.acrobatics,
+        sleightOfHand: skills?.sleightOfHand,
+        stealth: skills?.stealth,
+        arcana: skills?.arcana,
+        history: skills?.history,
+        investigation: skills?.investigation,
+        nature: skills?.nature,
+        religion: skills?.religion,
+        animalHandling: skills?.animalHandling,
+        insight: skills?.insight,
+        medicine: skills?.medicine,
+        perception: skills?.perception,
+        survival: skills?.survival,
+        deception: skills?.deception,
+        intimidation: skills?.intimidation,
+        performance: skills?.performance,
+      ),
+      senses: senses,
+      languages: languages,
+      savingThrows: CreatureSavingThrows(
+        strength: savingThrows?.strength,
+        dexterity: savingThrows?.dexterity,
+        constitution: savingThrows?.constitution,
+        intelligence: savingThrows?.intelligence,
+        wisdom: savingThrows?.wisdom,
+        charisma: savingThrows?.charisma,
+      ),
+      spellCasting: spellCasting == null
+          ? null
+          : CreatureSpellcasting(
+              name: spellCasting!.name,
+              headerEntries: spellCasting!.headerEntries,
+              footerEntries: spellCasting?.footerEntries,
+              ability: spellCasting!.ability,
+              spells: spellCasting!.spells?.map(
+                (level, draft) => MapEntry(
+                  level,
+                  SpellLevel(
+                    slots: draft.slots,
+                    spells: draft.spells?.toList() ?? [],
+                  ),
+                ),
+              ),
+              innateSpell: spellCasting?.innateSpell,
+            ),
+      actions: (actions ?? [])
+          .map(
+            (draft) => CreatureAction(
+              name: draft.name,
+              description: draft.description,
+              type: draft.type!, // decide how to handle a missing type
+            ),
+          )
+          .toList(),
+
+      traits: (traits ?? [])
+          .map(
+            (draft) =>
+                CreatureTrait(name: draft.name, description: draft.description),
+          )
+          .toList(),
+      regionalEffect: regionalEffect == null
+          ? null
+          : CreatureRegionalEffect(
+              blurb: regionalEffect!.blurb,
+              bulletPoints: regionalEffect!.bulletPoints ?? [],
+              blurbEnd: regionalEffect?.blurbEnd,
+            ),
+    );
+  }
 
   CreatureDraft({
     this.name = '',
