@@ -134,6 +134,12 @@ Creature parseCreature(
       intelligence: int.tryParse(save['int']?.toString() ?? ''),
       wisdom: int.tryParse(save['wis']?.toString() ?? ''),
       charisma: int.tryParse(save['cha']?.toString() ?? ''),
+      isStrProf: false,
+      isDexProf: false,
+      isConProf:  false,
+      isIntProf:  false,
+      isWisProf:  false,
+      isChaProf:  false,
     ),
     spellCasting: spells == null || spells.isEmpty
     ? null
