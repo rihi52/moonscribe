@@ -166,12 +166,29 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
     _draft.savingThrows.isWisProf = isWisChecked;
     _draft.savingThrows.isChaProf = isChaChecked;
 
-    _draft.abilityScores.strengthModifier     = abilityModifier(_draft.abilityScores.strength);
-    _draft.abilityScores.dexterityModifier    = abilityModifier(_draft.abilityScores.dexterity);
-    _draft.abilityScores.constitutionModifier = abilityModifier(_draft.abilityScores.constitution);
-    _draft.abilityScores.intelligenceModifier = abilityModifier(_draft.abilityScores.intelligence);
-    _draft.abilityScores.wisdomModifier       = abilityModifier(_draft.abilityScores.wisdom);
-    _draft.abilityScores.charismaModifier     = abilityModifier(_draft.abilityScores.charisma);
+    _draft.abilityScores.strengthModifier = abilityModifier(
+      _draft.abilityScores.strength,
+    );
+    _draft.abilityScores.dexterityModifier = abilityModifier(
+      _draft.abilityScores.dexterity,
+    );
+    _draft.abilityScores.constitutionModifier = abilityModifier(
+      _draft.abilityScores.constitution,
+    );
+    _draft.abilityScores.intelligenceModifier = abilityModifier(
+      _draft.abilityScores.intelligence,
+    );
+    _draft.abilityScores.wisdomModifier = abilityModifier(
+      _draft.abilityScores.wisdom,
+    );
+    _draft.abilityScores.charismaModifier = abilityModifier(
+      _draft.abilityScores.charisma,
+    );
+
+    final parsedChallengeRating = tryParseFraction(_draft.challengeRating.cr);
+    _draft.proficiencyBonus = parsedChallengeRating == null
+        ? 2
+        : proficiencyBonusCalc(parsedChallengeRating).toDouble();
 
     _draft.savingThrows.strength = savingThrowBonus(
       abilityScore: _draft.abilityScores.strength,
@@ -395,7 +412,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                               SizedBox(
                                 width: smallBoxWidth,
                                 child: StatblockCheckbox(
-                                  initialValue: c?.savingThrows.isStrProf ?? isStrChecked,
+                                  initialValue:
+                                      c?.savingThrows.isStrProf ?? isStrChecked,
                                   onChanged: (value) {
                                     setState(() {
                                       isStrChecked = value;
@@ -423,7 +441,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                               SizedBox(
                                 width: smallBoxWidth,
                                 child: StatblockCheckbox(
-                                  initialValue: c?.savingThrows.isDexProf ?? isDexChecked,
+                                  initialValue:
+                                      c?.savingThrows.isDexProf ?? isDexChecked,
                                   onChanged: (value) {
                                     setState(() {
                                       isDexChecked = value;
@@ -451,7 +470,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                               SizedBox(
                                 width: smallBoxWidth,
                                 child: StatblockCheckbox(
-                                  initialValue: c?.savingThrows.isConProf ?? isConChecked,
+                                  initialValue:
+                                      c?.savingThrows.isConProf ?? isConChecked,
                                   onChanged: (value) {
                                     setState(() {
                                       isConChecked = value;
@@ -479,7 +499,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                               SizedBox(
                                 width: smallBoxWidth,
                                 child: StatblockCheckbox(
-                                  initialValue: c?.savingThrows.isIntProf ?? isIntChecked,
+                                  initialValue:
+                                      c?.savingThrows.isIntProf ?? isIntChecked,
                                   onChanged: (value) {
                                     setState(() {
                                       isIntChecked = value;
@@ -507,7 +528,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                               SizedBox(
                                 width: smallBoxWidth,
                                 child: StatblockCheckbox(
-                                  initialValue: c?.savingThrows.isWisProf ?? isWisChecked,
+                                  initialValue:
+                                      c?.savingThrows.isWisProf ?? isWisChecked,
                                   onChanged: (value) {
                                     setState(() {
                                       isWisChecked = value;
@@ -535,7 +557,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                               SizedBox(
                                 width: smallBoxWidth,
                                 child: StatblockCheckbox(
-                                  initialValue: c?.savingThrows.isChaProf ?? isChaChecked,
+                                  initialValue:
+                                      c?.savingThrows.isChaProf ?? isChaChecked,
                                   onChanged: (value) {
                                     setState(() {
                                       isChaChecked = value;
@@ -564,7 +587,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Acrobatics',
-                            initalValue: isAcrobatics,
+                            initalValue:
+                                c?.skills?.isAcrobaticsProf ?? isAcrobatics,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isAcrobatics = value;
@@ -572,7 +596,9 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Animal Handling',
-                            initalValue: isAnimalHandling,
+                            initalValue:
+                                c?.skills?.isAnimalHandlingProf ??
+                                isAnimalHandling,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isAnimalHandling = value;
@@ -580,7 +606,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Arcana',
-                            initalValue: isArcana,
+                            initalValue: c?.skills?.isArcanaProf ?? isArcana,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isArcana = value;
@@ -588,7 +614,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Athletics',
-                            initalValue: isAthletics,
+                            initalValue:
+                                c?.skills?.isAthleticsProf ?? isAthletics,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isAthletics = value;
@@ -596,7 +623,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Deception',
-                            initalValue: isDeception,
+                            initalValue:
+                                c?.skills?.isDeceptionProf ?? isDeception,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isDeception = value;
@@ -604,7 +632,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'History',
-                            initalValue: isHistory,
+                            initalValue: c?.skills?.isHistoryProf ?? isHistory,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isHistory = value;
@@ -612,7 +640,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Insight',
-                            initalValue: isInsight,
+                            initalValue: c?.skills?.isInsightProf ?? isInsight,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isInsight = value;
@@ -620,7 +648,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Intimidation',
-                            initalValue: isIntimidation,
+                            initalValue:
+                                c?.skills?.isIntimidationProf ?? isIntimidation,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isIntimidation = value;
@@ -628,7 +657,9 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Investigation',
-                            initalValue: isInvestigation,
+                            initalValue:
+                                c?.skills?.isInvestigationProf ??
+                                isInvestigation,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isInvestigation = value;
@@ -653,7 +684,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Medicine',
-                            initalValue: isMedicine,
+                            initalValue:
+                                c?.skills?.isMedicineProf ?? isMedicine,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isMedicine = value;
@@ -661,7 +693,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Nature',
-                            initalValue: isNature,
+                            initalValue: c?.skills?.isNatureProf ?? isNature,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isNature = value;
@@ -669,7 +701,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Perception',
-                            initalValue: isPerception,
+                            initalValue:
+                                c?.skills?.isPerceptionProf ?? isPerception,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isPerception = value;
@@ -677,7 +710,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Performance',
-                            initalValue: isPerformance,
+                            initalValue:
+                                c?.skills?.isPerformanceProf ?? isPerformance,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isPerformance = value;
@@ -685,7 +719,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Persuasion',
-                            initalValue: isPersuasion,
+                            initalValue:
+                                c?.skills?.isPersuasionProf ?? isPersuasion,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isPersuasion = value;
@@ -693,7 +728,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Religion',
-                            initalValue: isReligion,
+                            initalValue:
+                                c?.skills?.isReligionProf ?? isReligion,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isReligion = value;
@@ -701,7 +737,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Sleight of Hand',
-                            initalValue: isSleightHand,
+                            initalValue:
+                                c?.skills?.isSleightOfHandProf ?? isSleightHand,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isSleightHand = value;
@@ -709,7 +746,7 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Stealth',
-                            initalValue: isStealth,
+                            initalValue: c?.skills?.isStealthProf ?? isStealth,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isStealth = value;
@@ -717,7 +754,8 @@ class _StatblockEditorForm extends State<StatblockEditorForm> {
                           ),
                           StatblockCheckboxRow(
                             label: 'Survival',
-                            initalValue: isSurvival,
+                            initalValue:
+                                c?.skills?.isSurvivalProf ?? isSurvival,
                             width: smallBoxWidth,
                             onChanged: (value) => setState(() {
                               isSurvival = value;
@@ -943,6 +981,7 @@ class CreatureDraft {
   int hitPoints;
   String? hitPointFormula;
   CreatureCRDraft challengeRating;
+  double? proficiencyBonus;
   CreatureSpeedDraft speed;
   CreatureAbilityScoresDraft abilityScores;
   CreatureSkillsDraft? skills;
@@ -971,6 +1010,7 @@ class CreatureDraft {
         lair: challengeRating.lair,
         coven: challengeRating.coven,
       ),
+      proficiencyBonus: proficiencyBonus,
       speed: CreatureSpeed(
         walk: speed.walk,
         fly: speed.fly,
@@ -994,22 +1034,41 @@ class CreatureDraft {
       ),
       skills: CreatureSkills(
         athletics: skills?.athletics,
+        isAthleticsProf: skills?.isAthleticsProf,
         acrobatics: skills?.acrobatics,
+        isAcrobaticsProf: skills?.isAcrobaticsProf,
         sleightOfHand: skills?.sleightOfHand,
+        isSleightOfHandProf: skills?.isSleightOfHandProf,
         stealth: skills?.stealth,
+        isStealthProf: skills?.isStealthProf,
         arcana: skills?.arcana,
+        isArcanaProf: skills?.isArcanaProf,
         history: skills?.history,
+        isHistoryProf: skills?.isHistoryProf,
         investigation: skills?.investigation,
+        isInvestigationProf: skills?.isInvestigationProf,
         nature: skills?.nature,
+        isNatureProf: skills?.isNatureProf,
         religion: skills?.religion,
+        isReligionProf: skills?.isReligionProf,
         animalHandling: skills?.animalHandling,
+        isAnimalHandlingProf: skills?.isAnimalHandlingProf,
         insight: skills?.insight,
+        isInsightProf: skills?.isInsightProf,
         medicine: skills?.medicine,
+        isMedicineProf: skills?.isMedicineProf,
         perception: skills?.perception,
+        isPerceptionProf: skills?.isPerceptionProf,
         survival: skills?.survival,
+        isSurvivalProf: skills?.isSurvivalProf,
         deception: skills?.deception,
+        isDeceptionProf: skills?.isDeceptionProf,
         intimidation: skills?.intimidation,
+        isIntimidationProf: skills?.isIntimidationProf,
         performance: skills?.performance,
+        isPerformanceProf: skills?.isPerformanceProf,
+        persuasion: skills?.persuasion,
+        isPersuasionProf: skills?.isPersuasionProf,
       ),
       senses: senses,
       languages: languages,
@@ -1080,6 +1139,7 @@ class CreatureDraft {
     this.hitPoints = 1,
     this.hitPointFormula = '',
     required this.challengeRating,
+    this.proficiencyBonus,
     required this.speed,
     required this.abilityScores,
     this.skills,
@@ -1230,41 +1290,79 @@ class CreatureSavingThrowsDraft {
 
 class CreatureSkillsDraft {
   String? athletics;
+  bool? isAthleticsProf;
   String? acrobatics;
+  bool? isAcrobaticsProf;
   String? sleightOfHand;
+  bool? isSleightOfHandProf;
   String? stealth;
+  bool? isStealthProf;
   String? arcana;
+  bool? isArcanaProf;
   String? history;
+  bool? isHistoryProf;
   String? investigation;
+  bool? isInvestigationProf;
   String? nature;
+  bool? isNatureProf;
   String? religion;
+  bool? isReligionProf;
   String? animalHandling;
+  bool? isAnimalHandlingProf;
   String? insight;
+  bool? isInsightProf;
   String? medicine;
+  bool? isMedicineProf;
   String? perception;
+  bool? isPerceptionProf;
+  String? persuasion;
+  bool? isPersuasionProf;
   String? survival;
+  bool? isSurvivalProf;
   String? deception;
+  bool? isDeceptionProf;
   String? intimidation;
+  bool? isIntimidationProf;
   String? performance;
+  bool? isPerformanceProf;
 
   CreatureSkillsDraft({
     this.athletics,
+    this.isAthleticsProf,
     this.acrobatics,
+    this.isAcrobaticsProf,
     this.sleightOfHand,
+    this.isSleightOfHandProf,
     this.stealth,
+    this.isStealthProf,
     this.arcana,
+    this.isArcanaProf,
     this.history,
+    this.isHistoryProf,
     this.investigation,
+    this.isInvestigationProf,
     this.nature,
+    this.isNatureProf,
     this.religion,
+    this.isReligionProf,
     this.animalHandling,
+    this.isAnimalHandlingProf,
     this.insight,
+    this.isInsightProf,
     this.medicine,
+    this.isMedicineProf,
     this.perception,
+    this.isPerceptionProf,
+    this.persuasion,
+    this.isPersuasionProf,
     this.survival,
+    this.isSurvivalProf,
     this.deception,
+    this.isDeceptionProf,
     this.intimidation,
+    this.isIntimidationProf,
     this.performance,
+    this.isPerformanceProf,
   });
 }
 
@@ -1341,7 +1439,8 @@ class StatblockEditSmallText extends StatelessWidget {
             labelText: labelText,
             labelStyle: Theme.of(context).textTheme.titleSmall,
           ),
-          validator: (value) => required && (value == null || value.trim().isEmpty)
+          validator: (value) =>
+              required && (value == null || value.trim().isEmpty)
               ? '$labelText is required'
               : null,
           onSaved: (v) => onSaved((v ?? '').trim()),

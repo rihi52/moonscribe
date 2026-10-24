@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moonscribe/components/creature_calculations.dart';
 import 'package:moonscribe/theme/apptheme.dart';
 
 class CreatureStatBlock extends StatelessWidget {
@@ -271,16 +272,17 @@ class CreatureStatBlock extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Senses: ',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      if (creature!.senses != null)
-                        StatblockSmallText(data: creature!.senses!),
-                    ],
-                  ),
+                  if (creature?.senses != null && creature?.senses != '')
+                    Row(
+                      children: [
+                        Text(
+                          'Senses: ',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        if (creature?.senses != null && creature?.senses != '')
+                          StatblockSmallText(data: creature!.senses!),
+                      ],
+                    ),
                   Row(
                     children: [
                       Text(
@@ -298,6 +300,10 @@ class CreatureStatBlock extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                       StatblockSmallText(data: '${creature!.challengeRating}'),
+                      StatblockSmallText(
+                        data:
+                            '   Proficiency Bonus: +${creature?.proficiencyBonus?.toInt() ?? proficiencyBonusCalc(tryParseFraction(creature!.challengeRating.cr) ?? 2)}',
+                      ),
                     ],
                   ),
                 ],
@@ -397,8 +403,8 @@ class CreatureStatBlock extends StatelessWidget {
                   ],
                 ),
               ),
-              if (creature?.actions != null)
-                ...buildActionSections(context, creature!.actions!),
+            if (creature?.actions != null)
+              ...buildActionSections(context, creature!.actions!),
             if (creature!.regionalEffect != null)
               StatblockSection(
                 child: Text(
@@ -515,6 +521,7 @@ class Creature {
   final int hitPoints;
   final String? hitPointFormula;
   final CreatureCR challengeRating;
+  final double? proficiencyBonus;
   final CreatureSpeed speed;
   final CreatureAbilityScores abilityScores;
   final CreatureSkills? skills;
@@ -537,6 +544,7 @@ class Creature {
     required this.hitPoints,
     this.hitPointFormula,
     required this.challengeRating,
+    this.proficiencyBonus,
     required this.speed,
     required this.abilityScores,
     this.skills,
@@ -689,7 +697,7 @@ class CreatureSavingThrows {
   final int? dexterity;
   final bool? isDexProf;
   final int? constitution;
-  final bool? isConProf ;
+  final bool? isConProf;
   final int? intelligence;
   final bool? isIntProf;
   final int? wisdom;
@@ -715,41 +723,79 @@ class CreatureSavingThrows {
 
 class CreatureSkills {
   final String? athletics;
+  final bool? isAthleticsProf;
   final String? acrobatics;
+  final bool? isAcrobaticsProf;
   final String? sleightOfHand;
+  final bool? isSleightOfHandProf;
   final String? stealth;
+  final bool? isStealthProf;
   final String? arcana;
+  final bool? isArcanaProf;
   final String? history;
+  final bool? isHistoryProf;
   final String? investigation;
+  final bool? isInvestigationProf;
   final String? nature;
+  final bool? isNatureProf;
   final String? religion;
+  final bool? isReligionProf;
   final String? animalHandling;
+  final bool? isAnimalHandlingProf;
   final String? insight;
+  final bool? isInsightProf;
   final String? medicine;
+  final bool? isMedicineProf;
   final String? perception;
+  final bool? isPerceptionProf;
   final String? survival;
+  final bool? isSurvivalProf;
   final String? deception;
+  final bool? isDeceptionProf;
   final String? intimidation;
+  final bool? isIntimidationProf;
+  final String? persuasion;
+  final bool? isPersuasionProf;
   final String? performance;
+  final bool? isPerformanceProf;
 
   const CreatureSkills({
     required this.athletics,
+    this.isAthleticsProf,
     required this.acrobatics,
+    this.isAcrobaticsProf,
     required this.sleightOfHand,
+    this.isSleightOfHandProf,
     required this.stealth,
+    this.isStealthProf,
     required this.arcana,
+    this.isArcanaProf,
     required this.history,
+    this.isHistoryProf,
     required this.investigation,
+    this.isInvestigationProf,
     required this.nature,
+    this.isNatureProf,
     required this.religion,
+    this.isReligionProf,
     required this.animalHandling,
+    this.isAnimalHandlingProf,
     required this.insight,
+    this.isInsightProf,
     required this.medicine,
+    this.isMedicineProf,
     required this.perception,
+    this.isPerceptionProf,
+    required this.persuasion,
+    this.isPersuasionProf,
     required this.survival,
+    this.isSurvivalProf,
     required this.deception,
+    this.isDeceptionProf,
     required this.intimidation,
+    this.isIntimidationProf,
     required this.performance,
+    this.isPerformanceProf,
   });
 }
 
